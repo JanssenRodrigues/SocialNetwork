@@ -16,7 +16,7 @@ using Microsoft.Owin.Security.OAuth;
 using SocialNetwork.Api.Models;
 using SocialNetwork.Api.Providers;
 using SocialNetwork.Api.Results;
-using SocialNetwork.Web.Models;
+using SocialNetwork.Core.Models;
 
 namespace SocialNetwork.Api.Controllers
 {
@@ -158,7 +158,7 @@ namespace SocialNetwork.Api.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("RecoveryPassword")]
-        public async Task<IHttpActionResult> ResetPassword(RecoveryPassViewModel model)
+        public async Task<IHttpActionResult> ResetPassword(RecoveryPass model)
         {
             if (!ModelState.IsValid)
             {

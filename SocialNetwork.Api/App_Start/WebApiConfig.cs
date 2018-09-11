@@ -19,7 +19,7 @@ namespace SocialNetwork.Api
 
             // Rotas de API Web
             config.MapHttpAttributeRoutes();
-
+            System.Web.Mvc.ControllerBuilder.Current.DefaultNamespaces.Add("SocialNetwork.Api.Controllers"); // SET DEFAULT NAMESPACE TO AVOID CONFLICTS WITH WEB PROJECT. 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

@@ -2,18 +2,26 @@
 using SocialNetwork.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace SocialNetwork.Web.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: Account
+
+        // GET: Account/Register
         public ActionResult Register()
         {
+            if (Session["access_token"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -24,28 +32,33 @@ namespace SocialNetwork.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var client = new HttpClient())
+                using(var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost:56331/");
+                    client.BaseAddress = new Uri("http://localhost:56331");
 
                     var response = await client.PostAsJsonAsync("api/Account/Register", model);
 
                     if (response.IsSuccessStatusCode)
                     {
                         return RedirectToAction("Login");
-                    }
-                    else
+                    } else
                     {
                         return View("Error");
                     }
                 }
             }
+
             return View();
         }
 
         // GET: Account
         public ActionResult Login()
         {
+            if (Session["access_token"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -77,10 +90,9 @@ namespace SocialNetwork.Web.Controllers
 
                             var tokenData = JObject.Parse(responseContent);
 
-                            Session.Add("access_token", tokenData["access_data"]);
+                            Session.Add("access_token", tokenData["access_token"]);
 
                             return RedirectToAction("Index", "Home");
-
                         }
 
                         return View("Error");
@@ -89,65 +101,6 @@ namespace SocialNetwork.Web.Controllers
             }
 
             return View();
-        }
-
-        public ActionResult Logout()
-        {
-            FormsAuthentication.SignOut();
-            Session.RemoveAll();
-            return View("Logout");
-        }
-
-        public ActionResult ForgotPass()
-        {
-            return View("ForgotPass");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPass(RegisterViewModel model)
-        {
-            await SendGridHelper.sendEmail(model.Email);
-
-            return View("ForgotSucess");
-        }
-
-        public ActionResult RecoveryPass()
-        {
-            return View("RecoveryPass");
-        }
-
-
-
-        // POST api/Account/Register
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> RecoveryPass(RecoveryPassViewModel model)
-        {
-
-            if (ModelState.IsValid)
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://localhost:56331/");
-
-                    var response = await client.PostAsJsonAsync("api/Account/RecoveryPassword", model);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("RecoverySuccess");
-                    }
-                    else
-                    {
-                        return View("Error");
-                    }
-                }
-            }
-
-            return View();
-        }
-
+        } 
     }
 }
-
-

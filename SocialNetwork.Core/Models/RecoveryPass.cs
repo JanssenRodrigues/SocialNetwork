@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SocialNetwork.Web.Models
+namespace SocialNetwork.Core.Models
 {
-    public class RecoveryPassViewModel
+    public class RecoveryPass
     {
         public string NewPassword { get; set; }
         public string ConfirmPassword { get; set; }

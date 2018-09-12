@@ -1,57 +1,134 @@
-﻿using Microsoft.AspNet.Identity;
-using SocialNetwork.Api.Models;
-using SocialNetwork.Core.Models;
-using SocialNetwork.DataAccess.Reposotories;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
+using SocialNetwork.Api.Models;
+using SocialNetwork.Core.Models;
 
 namespace SocialNetwork.Api.Controllers
 {
     public class ProfilesController : ApiController
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         // GET: api/Profiles
-        public IEnumerable<string> Get()
+        public IQueryable<Profile> GetProfiles()
         {
-            return new string[] { "value1", "value2" };
+            return db.Profiles;
         }
 
         // GET: api/Profiles/5
-        public string Get(int id)
+        [ResponseType(typeof(Profile))]
+        public IHttpActionResult GetProfile(Guid id)
         {
-            return "value";
-        }
-
-        // POST: api/Profiles
-        public IHttpActionResult Post(ProfileBindingModel model)
-        {
-            var accountId = User.Identity.GetUserId();
-
-            var profile = new Profile()
+            Profile profile = db.Profiles.Find(id);
+            if (profile == null)
             {
-                AccountId = accountId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                BirthDate = model.BirthDate
-            };
+                return NotFound();
+            }
 
-            var repository = new ProfileRepository();
-            repository.Create(profile);
-
-            return Ok();
+            return Ok(profile);
         }
 
         // PUT: api/Profiles/5
-        public void Put(int id, [FromBody]string value)
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutProfile(Guid id, Profile profile)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != profile.Id)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(profile).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProfileExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // POST: api/Profiles
+        [ResponseType(typeof(Profile))]
+        public IHttpActionResult PostProfile(Profile profile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Profiles.Add(profile);
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                if (ProfileExists(profile.Id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = profile.Id }, profile);
         }
 
         // DELETE: api/Profiles/5
-        public void Delete(int id)
+        [ResponseType(typeof(Profile))]
+        public IHttpActionResult DeleteProfile(Guid id)
         {
+            Profile profile = db.Profiles.Find(id);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            db.Profiles.Remove(profile);
+            db.SaveChanges();
+
+            return Ok(profile);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private bool ProfileExists(Guid id)
+        {
+            return db.Profiles.Count(e => e.Id == id) > 0;
         }
     }
 }

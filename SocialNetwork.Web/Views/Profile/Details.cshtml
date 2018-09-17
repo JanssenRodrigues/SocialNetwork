@@ -1,0 +1,110 @@
+﻿@model SocialNetwork.Core.Models.Profile
+
+@{
+    ViewBag.Title = "Details";
+}
+<div>
+    @if (ViewBag.ProfileEmail == Model.Email)
+    {
+        <h1>Meu Perfil</h1>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthDay)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BirthDay)
+            </dd>
+
+        </dl>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+    else
+    {
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Follow/CheckFollow/@Model.Id",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        //alert(JSON.stringify(data));
+                        console.log(data);
+                    } //End of AJAX Success function
+                });
+
+                $('#followButton').click(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "/Follow/FollowProfile/@Model.Id",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            //alert(JSON.stringify(data));
+                            console.log(data);
+                        } //End of AJAX Success function                        
+                    });
+                });
+            });
+        </script>
+        <h2>@Model.FirstName @Model.LastName</h2>
+        <a href="#" id="followButton" class="btn btn-primary btn-lg">Seguir</a>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BirthDay)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BirthDay)
+            </dd>
+
+        </dl>
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+</div>

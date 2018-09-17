@@ -10,22 +10,26 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using SocialNetwork.Api.Models;
 using SocialNetwork.Core.Models;
+using SocialNetwork.DataAccess.Repositories;
+using SocialNetwork.DataAccess.Services;
 
 namespace SocialNetwork.Api.Controllers
 {
     public class ProfilesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ProfileService _profileService = new ProfileService(new ProfileStoredProcedureRepository());
 
         // GET: api/Profiles
-        public IQueryable<Profile> GetProfiles()
+        public IEnumerable<Profile> GetProfiles()
         {
             return db.Profiles;
         }
 
         // GET: api/Profiles/5
+        [Route("api/Profiles/{id:int}")]
         [ResponseType(typeof(Profile))]
-        public IHttpActionResult GetProfile(Guid id)
+        public IHttpActionResult GetProfile(int id)
         {
             Profile profile = db.Profiles.Find(id);
             if (profile == null)
@@ -36,39 +40,40 @@ namespace SocialNetwork.Api.Controllers
             return Ok(profile);
         }
 
+        // GET: api/Profiles/:email
+        [Route("{email}")]
+        [ResponseType(typeof(Profile))]
+        public IHttpActionResult GetByEmail(string email)
+        {
+            email = email.DecodeBase64();
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            Profile profile = profileStored.GetByEmail(email);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(profile);
+        }
+
         // PUT: api/Profiles/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutProfile(Guid id, Profile profile)
+        [Route("api/Profiles/{id:int}")]
+        public IHttpActionResult PutProfile(int id, Profile profile)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != profile.Id)
-            {
-                return BadRequest();
-            }
+            //db.Profiles.Add(profile);
 
-            db.Entry(profile).State = EntityState.Modified;
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            Profile createdProfile = profileStored.EditProfile(profile);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _profileService.EditProfile(profile);
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(profile);
+
         }
 
         // POST: api/Profiles
@@ -82,28 +87,15 @@ namespace SocialNetwork.Api.Controllers
 
             db.Profiles.Add(profile);
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (ProfileExists(profile.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _profileService.CreateProfile(profile);
 
             return CreatedAtRoute("DefaultApi", new { id = profile.Id }, profile);
         }
 
         // DELETE: api/Profiles/5
+        [Route("api/Profiles/{id:int}")]
         [ResponseType(typeof(Profile))]
-        public IHttpActionResult DeleteProfile(Guid id)
+        public IHttpActionResult DeleteProfile(int id)
         {
             Profile profile = db.Profiles.Find(id);
             if (profile == null)
@@ -111,8 +103,8 @@ namespace SocialNetwork.Api.Controllers
                 return NotFound();
             }
 
-            db.Profiles.Remove(profile);
-            db.SaveChanges();
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            Profile createdProfile = profileStored.DeleteProfile(profile);
 
             return Ok(profile);
         }
@@ -126,7 +118,7 @@ namespace SocialNetwork.Api.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ProfileExists(Guid id)
+        private bool ProfileExists(int id)
         {
             return db.Profiles.Count(e => e.Id == id) > 0;
         }

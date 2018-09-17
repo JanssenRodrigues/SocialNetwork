@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Repositories\IFollowRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IProfileRepository.cs" />
+    <Compile Include="Models\Follow.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\RecoveryPass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

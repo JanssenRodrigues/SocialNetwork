@@ -11,7 +11,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json.Linq;
+using SocialNetwork.Core.Interfaces.Repositories;
+using SocialNetwork.Core.Models;
 using SocialNetwork.Web.Models;
+using SocialNetwork.DataAccess.Services;
+using SocialNetwork.DataAccess.Repositories;
 
 namespace SocialNetwork.Web.Controllers
 {
@@ -76,28 +80,70 @@ namespace SocialNetwork.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+
+            var loginRequest = await _client.PostAsJsonAsync<LoginViewModel>("api/account/login", model);
+
+            if (!loginRequest.IsSuccessStatusCode)
             {
-                return View(model);
+                RedirectToAction("Index");
             }
 
-            // Isso não conta falhas de login em relação ao bloqueio de conta
-            // Para permitir que falhas de senha acionem o bloqueio da conta, altere para shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            //Get Token and save in Session
+            //setup login data
+            var formContent = new FormUrlEncodedContent(new[]
             {
-                case SignInStatus.Success:
-                    Session["userEmail"] = model.Email;
-                    return RedirectToAction("Details", "Profiles");
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Tentativa de login inválida.");
-                    return View(model);
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", model.Email),
+                new KeyValuePair<string, string>("password", model.Password),
+            });
+
+            //send request
+            HttpResponseMessage responseMessage = await _client.PostAsync("Token", formContent);
+
+            //get access token from response body
+            var responseJson = await responseMessage.Content.ReadAsStringAsync();
+            var jObject = JObject.Parse(responseJson);
+            Session["apiToken"] = jObject.GetValue("access_token").ToString();
+            Session["userEmail"] = model.Email;
+
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            Profile profile = profileStored.GetByEmail(model.Email);
+
+            if(profile.Id != 0)
+            {
+                HttpResponseMessage result = await _client.GetAsync("api/Profiles/" + profile.Id);
+
+                var profileResponseJson = await result.Content.ReadAsStringAsync();
+                var profileJObject = JObject.Parse(profileResponseJson);
+
+                if (result.IsSuccessStatusCode) {
+                    return RedirectPermanent("/Profile/Details/" + profile.Id);
+                }
             }
+            return RedirectToAction("Create", "Profile");
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
+
+            //// This doesn't count login failures towards account lockout
+            //// To enable password failures to trigger account lockout, change to shouldLockout: true
+            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            //switch (result)
+            //{
+            //    case SignInStatus.Success:
+            //        Session["userEmail"] = model.Email;
+            //        return RedirectToAction("Create", "Profile");
+            //    case SignInStatus.LockedOut:
+            //        return View("Lockout");
+            //    case SignInStatus.RequiresVerification:
+            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+            //    case SignInStatus.Failure:
+            //    default:
+            //        ModelState.AddModelError("", "Invalid login attempt.");
+            //        return View(model);
+            //}
         }
 
         //
@@ -158,7 +204,7 @@ namespace SocialNetwork.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            var registerRequest = await _client.PostAsJsonAsync<RegisterViewModel>("api/account/register", model);
+            var registerRequest = await _client.PostAsJsonAsync<RegisterViewModel>("api/Account/Register", model);
 
             if (!registerRequest.IsSuccessStatusCode)
             {
@@ -183,7 +229,7 @@ namespace SocialNetwork.Web.Controllers
             Session["apiToken"] = jObject.GetValue("access_token").ToString();
             Session["userEmail"] = model.Email;
 
-            return RedirectToAction("Create", "Profiles");
+            return RedirectToAction("Create", "Profile");
         }
 
         //

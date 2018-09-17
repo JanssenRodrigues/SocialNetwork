@@ -37,5 +37,17 @@ namespace SocialNetwork.DataAccess.Properties {
                 this["DbConnectionString"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("STRING DO AZURE")]
+        public string StorageConnectionString {
+            get {
+                return ((string)(this["StorageConnectionString"]));
+            }
+            set {
+                this["StorageConnectionString"] = value;
+            }
+        }
     }
 }

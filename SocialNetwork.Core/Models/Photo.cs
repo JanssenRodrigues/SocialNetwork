@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.Core.Models
 {
-    class Photo
+    public class Photo
     {
+        public int Id { get; set; }
+        public string Url { get; set; }
+        public int GalleryId { get; set; }
     }
 }

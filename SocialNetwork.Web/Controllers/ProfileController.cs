@@ -1,4 +1,5 @@
-﻿using SocialNetwork.Core.Models;
+﻿using AzureStorageService;
+using SocialNetwork.Core.Models;
 using SocialNetwork.DataAccess.Repositories;
 using SocialNetwork.DataAccess.Services;
 using System;
@@ -42,7 +43,8 @@ namespace SocialNetwork.Web.Controllers
         public ActionResult Details(int? id)
         {
             RegisterClientToken();
-            Profile profile;
+            Profile profile, loggedProfile;
+            Follow follow;
 
             if(id == null)
             {
@@ -57,14 +59,27 @@ namespace SocialNetwork.Web.Controllers
             {
                 profile = _client.GetAsync("api/profiles/" + id)
                     .Result.Content.ReadAsAsync<Profile>().Result;
+
+                loggedProfile = _client.GetAsync("api/profiles/" + Session["userEmail"].ToString().EncodeBase64())
+                        .Result.Content.ReadAsAsync<Profile>().Result;
+
+                follow = _client.GetAsync("api/Follow/" + loggedProfile.Id + "/" + id).Result.Content.ReadAsAsync<Follow>().Result;
+
+                if(follow.Id != 0)
+                {
+                    ViewBag.Follow = true;
+                }
+                ViewBag.ProfileId = loggedProfile.Id;
+
             }
 
             if(profile == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ProfileId = id;
+
             ViewBag.ProfileEmail = Session["userEmail"];
+            //ViewBag.Following = follow;
             return View(profile);
         }
 
@@ -79,16 +94,16 @@ namespace SocialNetwork.Web.Controllers
         // POST: Profile/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,Email,Birthday,AccountId")] Profile profile)
+        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,Email,Birthday,AccountId,PhotoUrl")] Profile profile, HttpPostedFileBase PhotoUrl)
         {
             RegisterClientToken();
             if (ModelState.IsValid)
             {
                 //##### Upload da Foto para o Blob #####
-                //HttpPostedFileBase file = PhotoFile;
-                //var blobService = new BlobService();
-                //string fileUrl = await blobService.UploadImage("socialnetwork", Guid.NewGuid().ToString() + file.FileName, file.InputStream, file.ContentType);
-                //profile.PictureUrl = fileUrl;
+                HttpPostedFileBase file = PhotoUrl;
+                var blobService = new BlobService();
+                string fileUrl = await blobService.UploadImage("socialnetwork", Guid.NewGuid().ToString() + file.FileName, file.InputStream, file.ContentType);
+                profile.PhotoUrl = fileUrl;
                 //#######################################
                 await _client.PostAsJsonAsync<Profile>("api/profiles", profile);
 
@@ -120,15 +135,21 @@ namespace SocialNetwork.Web.Controllers
 
         // POST: Profile/Edit/5
         [HttpPost]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,Email,BirthDay")] Profile profile)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,Email,BirthDay,PhotoUrl")] Profile profile, HttpPostedFileBase PhotoUrl)
         {
             RegisterClientToken();
             if (ModelState.IsValid)
             {
+                //##### Upload da Foto para o Blob #####
+                HttpPostedFileBase file = PhotoUrl;
+                var blobService = new BlobService();
+                string fileUrl = await blobService.UploadImage("socialnetwork", Guid.NewGuid().ToString() + file.FileName, file.InputStream, file.ContentType);
+                profile.PhotoUrl = fileUrl;
+                //#######################################
                 await _client.PutAsJsonAsync<Profile>("api/profiles/" + profile.Id, profile);
 
-                ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
-                Profile createdProfile = profileStored.EditProfile(profile);
+                //ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+                //Profile createdProfile = profileStored.EditProfile(profile);
             }
             return RedirectPermanent("/Profile/Details/" + profile.Id);
         }

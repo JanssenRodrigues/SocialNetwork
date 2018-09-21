@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SocialNetwork.DataAccess.Properties {
+namespace AzureStorageService.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -23,18 +23,14 @@ namespace SocialNetwork.DataAccess.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Janssen\\source\\repos" +
-            "\\SocialNetwork\\SocialNetwork.Api\\App_Data\\aspnet-SocialNetwork.Api-2018081211405" +
-            "0.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Securit" +
-            "y=True")]
-        public string DbConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("DefaultEndpointsProtocol=https;AccountName=socialnetworkstorage;AccountKey=AuVXt4" +
+            "GApKLbuySKt6zzhsc7oIBfIVwllco/8iOCwMGLcaScSxzZGrwEWkIjSai2+LSgJb1Ik3t1F5SEunWSfw" +
+            "==;EndpointSuffix=core.windows.net")]
+        public string StorageConnectionString {
             get {
-                return ((string)(this["DbConnectionString"]));
-            }
-            set {
-                this["DbConnectionString"] = value;
+                return ((string)(this["StorageConnectionString"]));
             }
         }
     }

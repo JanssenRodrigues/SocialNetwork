@@ -5,8 +5,5 @@
     <Setting Name="DbConnectionString" Type="System.String" Scope="User">
       <Value Profile="(Default)">Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True</Value>
     </Setting>
-    <Setting Name="StorageConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">STRING DO AZURE</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

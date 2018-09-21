@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SocialNetwork.DataAccess.Services
+namespace AzureStorageService
 {
     public class BlobService
     {
@@ -14,7 +14,7 @@ namespace SocialNetwork.DataAccess.Services
 
         public BlobService()
         {
-            _cloudStorageAccount = CloudStorageAccount.Parse(Properties.Settings.Default.StorageConnectionString);
+            _cloudStorageAccount = CloudStorageAccount.Parse(AzureStorageService.Properties.Settings.Default.StorageConnectionString);
         }
 
         /// <summary>

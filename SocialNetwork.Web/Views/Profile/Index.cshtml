@@ -26,6 +26,9 @@
         <th>
             @Html.DisplayNameFor(model => model.AccountId)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhotoUrl)
+        </th>
         <th></th>
     </tr>
 
@@ -47,9 +50,12 @@
             @Html.DisplayFor(modelItem => item.AccountId)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <img src="@Html.DisplayFor(modelItem => item.PhotoUrl)" alt="Alternate Text" />            
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
 }

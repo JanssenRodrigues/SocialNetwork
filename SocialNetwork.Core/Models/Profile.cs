@@ -14,5 +14,6 @@ namespace SocialNetwork.Core.Models
         public string LastName { get; set; }
         public DateTime BirthDay { get; set; }
         public string AccountId { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }

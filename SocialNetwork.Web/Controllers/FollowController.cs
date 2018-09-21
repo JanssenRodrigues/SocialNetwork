@@ -33,25 +33,46 @@ namespace SocialNetwork.Web.Controllers
             Profile profile;
             ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
             profile = profileStored.GetByEmail(Session["userEmail"].ToString());
-            //profile = _client.GetAsync("api/profiles/" + Session["userEmail"].ToString().EncodeBase64()).Result.Content.ReadAsAsync<Profile>().Result;
             follow.UserId = profile.Id;
             follow.FollowingId = id;
-            var response = await _client.GetAsync("api/Follow/CheckFollow/" + follow.UserId + "/" + follow.FollowingId);
+
             await _client.PostAsJsonAsync<Follow>("api/follow", follow);
             return follow;
         }
 
-        //POST: /Follow/CheckFollow/id
-        public async Task<Follow> CheckFollow(int id)
+        //GET: /Follow/CheckFollow/followingId
+        [System.Web.Http.Route("Follow/CheckFollow/{id}")]
+        public Follow CheckFollow(int id)
         {
             Follow follow = new Follow();
             Profile profile;
             ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
             profile = profileStored.GetByEmail(Session["userEmail"].ToString());
-            follow.UserId = profile.Id;
-            follow.FollowingId = id;
 
-            await _client.GetAsync("api/Follow/CheckFollow/" + id);
+            string url = "api/Follow/" + profile.Id + "/" + id;
+            follow = _client.GetAsync(url).Result.Content.ReadAsAsync<Follow>().Result;
+            
+            return follow;
+        }
+
+        // DELETE: Follow/DeleteFollow/5
+        [System.Web.Http.Route("Follow/DeleteFollow/{id:int}")]
+        public Follow DeleteFollow(int id)
+        {
+            Profile profile;
+            Follow follow = new Follow();
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            profile = profileStored.GetByEmail(Session["userEmail"].ToString());
+
+            string url = "api/Follow/" + profile.Id + "/" + id;
+            var deleteResult = _client.DeleteAsync(url).Result;
+
+            if (!deleteResult.IsSuccessStatusCode)
+            {
+                return follow;
+            }
+            follow = deleteResult.Content.ReadAsAsync<Follow>().Result;
+
             return follow;
         }
     }

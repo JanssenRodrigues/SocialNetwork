@@ -90,8 +90,8 @@
     </Compile>
     <Compile Include="Repositories\FollowStoredProcedureRepository.cs" />
     <Compile Include="Repositories\ProfileStoredProcedureRepository.cs" />
-    <Compile Include="Services\BlobService.cs" />
     <Compile Include="Services\EncodingService.cs" />
+    <Compile Include="Services\FollowService.cs" />
     <Compile Include="Services\ProfileService.cs" />
   </ItemGroup>
   <ItemGroup>

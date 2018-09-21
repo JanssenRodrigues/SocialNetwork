@@ -22,8 +22,8 @@ namespace SocialNetwork.Api
             System.Web.Mvc.ControllerBuilder.Current.DefaultNamespaces.Add("SocialNetwork.Api.Controllers"); // SET DEFAULT NAMESPACE TO AVOID CONFLICTS WITH WEB PROJECT. 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{id}/{otherId}",
+                defaults: new { id = RouteParameter.Optional, otherId = RouteParameter.Optional }
             );
         }
     }

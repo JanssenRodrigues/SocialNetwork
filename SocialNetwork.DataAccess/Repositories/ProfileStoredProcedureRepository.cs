@@ -28,7 +28,7 @@ namespace SocialNetwork.DataAccess.Repositories
             sqlCommandAddProfile.Parameters.AddWithValue("LastName", profile.LastName);
             sqlCommandAddProfile.Parameters.AddWithValue("BirthDay", profile.BirthDay);
             sqlCommandAddProfile.Parameters.AddWithValue("AccountId", profile.Email);
-            //sqlCommandAddProfile.Parameters.AddWithValue("Photo", profile.Photo);
+            sqlCommandAddProfile.Parameters.AddWithValue("PhotoUrl", profile.PhotoUrl);
             sqlCommandAddProfile.ExecuteNonQuery();
             //########################################
 
@@ -56,7 +56,7 @@ namespace SocialNetwork.DataAccess.Repositories
                 profile.FirstName = reader["FirstName"].ToString();
                 profile.LastName = reader["LastName"].ToString();
                 profile.BirthDay = DateTime.Parse(reader["Birthday"].ToString());
-                //profile.Photo = reader["Photo"].ToString();
+                profile.PhotoUrl = reader["PhotoUrl"].ToString();
                 profile.Email = reader["Email"].ToString();
             }
             //############################################
@@ -85,7 +85,7 @@ namespace SocialNetwork.DataAccess.Repositories
                 profile.FirstName = reader["FirstName"].ToString();
                 profile.LastName = reader["LastName"].ToString();
                 profile.BirthDay = DateTime.Parse(reader["BirthDay"].ToString());
-                //profile.Photo = reader["Photo"].ToString();
+                profile.PhotoUrl = reader["PhotoUrl"].ToString();
                 profile.Email = reader["Email"].ToString();
             }
             //############################################
@@ -109,16 +109,9 @@ namespace SocialNetwork.DataAccess.Repositories
             sqlCommandGetProfile.Parameters.AddWithValue("FirstName", profile.FirstName);
             sqlCommandGetProfile.Parameters.AddWithValue("LastName", profile.LastName);
             sqlCommandGetProfile.Parameters.AddWithValue("BirthDay", profile.BirthDay);
-            var reader = sqlCommandGetProfile.ExecuteReader();
+            sqlCommandGetProfile.Parameters.AddWithValue("PhotoUrl", profile.PhotoUrl);
+            sqlCommandGetProfile.ExecuteReader();
 
-            while (reader.Read())
-            {
-                profile.Id = int.Parse(reader["Id"].ToString());
-                profile.Email = reader["Email"].ToString();
-                profile.FirstName = reader["FirstName"].ToString();
-                profile.LastName = reader["LastName"].ToString();
-                profile.BirthDay = DateTime.Parse(reader["BirthDay"].ToString());
-            }
             //############################################
 
             sqlConnection.Close();

@@ -32,6 +32,7 @@ namespace SocialNetwork.Api.Controllers
         public IHttpActionResult GetProfile(int id)
         {
             Profile profile = db.Profiles.Find(id);
+
             if (profile == null)
             {
                 return NotFound();
@@ -41,7 +42,7 @@ namespace SocialNetwork.Api.Controllers
         }
 
         // GET: api/Profiles/:email
-        [Route("{email}")]
+        [Route("api/Profiles/{email}")]
         [ResponseType(typeof(Profile))]
         public IHttpActionResult GetByEmail(string email)
         {
@@ -67,8 +68,8 @@ namespace SocialNetwork.Api.Controllers
 
             //db.Profiles.Add(profile);
 
-            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
-            Profile createdProfile = profileStored.EditProfile(profile);
+            //ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            //Profile createdProfile = profileStored.EditProfile(profile);
 
             _profileService.EditProfile(profile);
 

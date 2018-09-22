@@ -45,7 +45,7 @@ namespace SocialNetwork.DataAccess.Repositories
             Profile profile = new Profile();
             //######### OBTEM TODOS OS PROFILES ##########
             SqlCommand sqlCommandGetProfile;
-            sqlCommandGetProfile = new SqlCommand("GetProfile", sqlConnection);
+            sqlCommandGetProfile = new SqlCommand("GetProfileById", sqlConnection);
             sqlCommandGetProfile.CommandType = System.Data.CommandType.StoredProcedure;
             sqlCommandGetProfile.Parameters.AddWithValue("Id", id.ToString());
             var reader = sqlCommandGetProfile.ExecuteReader();

@@ -33,5 +33,9 @@ namespace SocialNetwork.Api.Models
         public System.Data.Entity.DbSet<SocialNetwork.Core.Models.Profile> Profiles { get; set; }
 
         public System.Data.Entity.DbSet<SocialNetwork.Core.Models.Follow> Follows { get; set; }
+
+        public System.Data.Entity.DbSet<SocialNetwork.Core.Models.Gallery> Galleries { get; set; }
+
+        public System.Data.Entity.DbSet<SocialNetwork.Core.Models.Photo> Photos { get; set; }
     }
 }

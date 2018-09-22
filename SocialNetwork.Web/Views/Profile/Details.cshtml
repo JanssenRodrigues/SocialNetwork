@@ -48,11 +48,38 @@
             </dd>
 
         </dl>
+
         <p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Editar perfil", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Criar nova Galeria de fotos", "CreateGallery", "Gallery") |
+            @Html.ActionLink("Deletar", "Delete", new { id = Model.Id }) 
         </p>
+        <style>
+            .gallery-container{
+                display:flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+
+            }
+            .gallery-box{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid black;
+                width: 200px;
+                height: 100px;
+                margin-right: 15px;
+                margin-bottom: 15px;
+            }
+        </style>
+        <h2>Minhas Galerias</h2>
+        <div class="gallery-container">
+            @foreach (var gallery in Model.Galleries)
+            {
+                <a class="gallery-box" href="/Gallery/Details/@gallery.Id">@gallery.Name</a>
+            }
+        </div>
     }
     else
     {

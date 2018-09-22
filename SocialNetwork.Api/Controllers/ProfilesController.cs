@@ -31,7 +31,13 @@ namespace SocialNetwork.Api.Controllers
         [ResponseType(typeof(Profile))]
         public IHttpActionResult GetProfile(int id)
         {
-            Profile profile = db.Profiles.Find(id);
+            Profile profile = _profileService.GetProfile(id);
+
+            GalleryStoredProcedureRepository galleryStored = new GalleryStoredProcedureRepository();
+            profile = galleryStored.GetGalleriesByProfileId(profile);
+
+
+            //Profile profile = profileStored.Get(id);
 
             if (profile == null)
             {

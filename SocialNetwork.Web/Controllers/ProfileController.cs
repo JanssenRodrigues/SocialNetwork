@@ -45,6 +45,7 @@ namespace SocialNetwork.Web.Controllers
             RegisterClientToken();
             Profile profile, loggedProfile;
             Follow follow;
+            //Gallery gallery;
 
             if(id == null)
             {
@@ -62,6 +63,9 @@ namespace SocialNetwork.Web.Controllers
 
                 loggedProfile = _client.GetAsync("api/profiles/" + Session["userEmail"].ToString().EncodeBase64())
                         .Result.Content.ReadAsAsync<Profile>().Result;
+
+                //profile.Galleries.Add(_client.GetAsync("api/GalleryByProfileId/" + profile.Id)
+                //        .Result.Content.ReadAsAsync<Gallery>().Result);
 
                 follow = _client.GetAsync("api/Follow/" + loggedProfile.Id + "/" + id).Result.Content.ReadAsAsync<Follow>().Result;
 

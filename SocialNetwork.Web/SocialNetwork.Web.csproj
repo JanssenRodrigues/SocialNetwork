@@ -223,6 +223,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FollowController.cs" />
+    <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -299,6 +300,8 @@
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Profile\Delete.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Gallery\CreateGallery.cshtml" />
+    <Content Include="Views\Gallery\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

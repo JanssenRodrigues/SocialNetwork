@@ -8,6 +8,10 @@ namespace SocialNetwork.Core.Models
 {
     public class Profile
     {
+        public Profile()
+        {
+            Galleries = new List<Gallery>();
+        }
         public int Id { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
@@ -15,5 +19,6 @@ namespace SocialNetwork.Core.Models
         public DateTime BirthDay { get; set; }
         public string AccountId { get; set; }
         public string PhotoUrl { get; set; }
+        public virtual ICollection<Gallery> Galleries { get; set; }
     }
 }

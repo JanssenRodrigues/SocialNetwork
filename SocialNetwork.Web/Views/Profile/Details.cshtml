@@ -7,61 +7,43 @@
     @if (ViewBag.ProfileEmail == Model.Email)
     {
         <h1>Meu Perfil</h1>
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
+        <div class="dl-horizontal">
 
-            <dd>
+            <img src="@Html.DisplayFor(model => model.PhotoUrl)" class="profile-image" />
+
+            <h3>
+                @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+            </h3>
+            <h3>
                 @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </dt>
+            </h3>
 
-            <dd>
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.LastName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.LastName)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.BirthDay)
-            </dt>
-
-            <dd>
+            <h2>
                 @Html.DisplayFor(model => model.BirthDay)
-            </dd>
+            </h2>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.PhotoUrl)
-            </dt>
-
-            <dd>
-                <img src="@Html.DisplayFor(model => model.PhotoUrl)" alt="Alternate Text" style="width: 300px;" />
-            </dd>
-
-        </dl>
+        </div>
 
         <p>
             @Html.ActionLink("Editar perfil", "Edit", new { id = Model.Id }) |
-            @Html.ActionLink("Criar nova Galeria de fotos", "CreateGallery", "Gallery") |
-            @Html.ActionLink("Deletar", "Delete", new { id = Model.Id }) 
+
+            @Html.ActionLink("Deletar", "Delete", new { id = Model.Id })
         </p>
         <style>
-            .gallery-container{
-                display:flex;
+            .profile-image {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+            }
+
+            .gallery-container {
+                display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-
             }
-            .gallery-box{
+
+            .gallery-box {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -80,10 +62,11 @@
                 <a class="gallery-box" href="/Gallery/Details/@gallery.Id">@gallery.Name</a>
             }
         </div>
-    }
-    else
-    {
-        <script>
+        @Html.ActionLink("Criar nova Galeria de fotos", "CreateGallery", "Gallery")
+}
+else
+{
+<script>
             $(document).ready(function () {
                 $('#followButton').click(function () {
                     $.ajax({
@@ -111,52 +94,52 @@
                     });
                 });
             });
-        </script>
-        <h2>@Model.FirstName @Model.LastName</h2>
-        if (ViewBag.Follow == true)
-        {
-            <a href="" id="unfollowButton" class="btn btn-danger btn-lg">Deixar de seguir</a>
-        }
-        else
-        {
-            <a href="" id="followButton" class="btn btn-primary btn-lg">Seguir</a>
-        }
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </dt>
+</script>
+<h2>@Model.FirstName @Model.LastName</h2>
+if (ViewBag.Follow == true)
+{
+    <a href="" id="unfollowButton" class="btn btn-danger btn-lg">Deixar de seguir</a>
+}
+else
+{
+    <a href="" id="followButton" class="btn btn-primary btn-lg">Seguir</a>
+}
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.FirstName)
+    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.FirstName)
-                </dd>
+    <dd>
+        @Html.DisplayFor(model => model.FirstName)
+    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.LastName)
-                </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.LastName)
+    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.LastName)
-                </dd>
+    <dd>
+        @Html.DisplayFor(model => model.LastName)
+    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.BirthDay)
-                </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.BirthDay)
+    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.BirthDay)
-                </dd>
+    <dd>
+        @Html.DisplayFor(model => model.BirthDay)
+    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.PhotoUrl)
-                </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.PhotoUrl)
+    </dt>
 
-                <dd>
-                    <img src="@Html.DisplayFor(model => model.PhotoUrl)" alt="Alternate Text" style="width: 300px;" />
-                </dd>
+    <dd>
+        <img src="@Html.DisplayFor(model => model.PhotoUrl)" alt="Alternate Text" style="width: 300px;" />
+    </dd>
 
-            </dl>
-        <p>
-            @Html.ActionLink("Back to List", "Index")
-        </p>
-    }
+</dl>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+}
 </div>

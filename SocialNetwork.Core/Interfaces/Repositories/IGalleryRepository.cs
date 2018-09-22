@@ -11,6 +11,7 @@ namespace SocialNetwork.Core.Interfaces.Repositories
     {
          Gallery Create(Gallery gallery);
          Gallery GetGallery(int id);
-         Gallery AddPhoto(Photo photo);
+         Photo AddPhoto(Photo photo);
+         Gallery GetPhotos(Gallery gallery);
     }
 }

@@ -18,22 +18,15 @@ namespace SocialNetwork.Api.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private GalleryService _galleryService = new GalleryService(new GalleryStoredProcedureRepository());
 
-
-
-
         // GET: api/Gallery/5
         [Route("api/Gallery/{id:int}")]
         public IHttpActionResult GetGallery(int id)
         {
-            //ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
-            //Profile profile = profileStored.Get(id);
-
             Gallery gallery = new Gallery();
             GalleryStoredProcedureRepository galleryStored = new GalleryStoredProcedureRepository();
             gallery = galleryStored.GetGallery(id);
 
-            //PhotoStoredProcedureRepository photosStored = new PhotoStoredProcedureRepository();
-            //gallery = photosStored.GetPhotosByGallery(gallery);
+            gallery = galleryStored.GetPhotos(gallery);
 
 
             if (gallery == null)
@@ -79,8 +72,23 @@ namespace SocialNetwork.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = gallery.Id }, gallery);
         }
 
-        // PUT: api/Gallery/5
-        public void Put(int id, [FromBody]string value)
+        // POST: api/Gallery/AddPhoto
+        [HttpPost]
+        [Route("api/Gallery/AddPhoto")]
+        public IHttpActionResult AddPhoto(Photo photo)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            GalleryStoredProcedureRepository storedGallery = new GalleryStoredProcedureRepository();
+            storedGallery.AddPhoto(photo);
+
+            return CreatedAtRoute("DefaultApi", new { id = photo.GalleryId}, photo);
+        }
+            // PUT: api/Gallery/5
+            public void Put(int id, [FromBody]string value)
         {
         }
 

@@ -65,6 +65,8 @@ namespace SocialNetwork.Web.Controllers
 
             gallery = _client.GetAsync("api/Gallery/" + id).Result.Content.ReadAsAsync<Gallery>().Result;
 
+            gallery = _client.GetAsync("api/Gallery/" + id).Result.Content.ReadAsAsync<Gallery>().Result;
+
 
             return View(gallery);
         }
@@ -85,14 +87,13 @@ namespace SocialNetwork.Web.Controllers
                 var blobService = new BlobService();
                 string fileUrl = await blobService.UploadImage("socialnetwork", Guid.NewGuid().ToString() + file.FileName, file.InputStream, file.ContentType);
                 photo.Url = fileUrl;
-                
-                photo.GalleryId = int.Parse(Url.RequestContext.RouteData.Values["Id"].ToString());
+                photo.GalleryId = int.Parse(Request.UrlReferrer.Segments[3].ToString());
                 //#######################################
 
                 await _client.PostAsJsonAsync("api/Gallery/AddPhoto", photo);
 
-                //return RedirectPermanent("/Gallery/Details/" + Id);
-            //return View()/
+                return RedirectPermanent("/Gallery/Details/" + photo.GalleryId);
+                //return View()/
             }
             return View();
         }

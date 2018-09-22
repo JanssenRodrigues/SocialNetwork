@@ -8,9 +8,13 @@ namespace SocialNetwork.Core.Models
 {
     public class Gallery
     {
+        public Gallery()
+        {
+            Photos = new List<Photo>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public int ProfileId { get; set; }
-        //public virtual ICollection<Photo> Photos { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace SocialNetwork.DataAccess.Services
             return _galleryRepository.GetGallery(id);
         }
 
-        public Gallery AddPhoto(Photo photo)
+        public Photo AddPhoto(Photo photo)
         {
             return _galleryRepository.AddPhoto(photo);
         }

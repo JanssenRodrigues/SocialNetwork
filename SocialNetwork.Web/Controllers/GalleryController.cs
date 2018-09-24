@@ -4,6 +4,7 @@ using SocialNetwork.DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -64,9 +65,10 @@ namespace SocialNetwork.Web.Controllers
             Gallery gallery = new Gallery();
 
             gallery = _client.GetAsync("api/Gallery/" + id).Result.Content.ReadAsAsync<Gallery>().Result;
-
-            gallery = _client.GetAsync("api/Gallery/" + id).Result.Content.ReadAsAsync<Gallery>().Result;
-
+            
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            Profile createdProfile = profileStored.GetByEmail(Session["userEmail"].ToString());
+            ViewBag.LoggedUserId = createdProfile.Id;
 
             return View(gallery);
         }
@@ -98,6 +100,48 @@ namespace SocialNetwork.Web.Controllers
             return View();
         }
 
+
+        // GET: Gallery/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Gallery gallery = _client.GetAsync("api/gallery/" + id)
+                .Result.Content.ReadAsAsync<Gallery>().Result;
+            if (gallery == null)
+            {
+                return HttpNotFound();
+            }
+            return View(gallery);
+        }
+
+        // POST: Gallery/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            RegisterClientToken();
+            Gallery gallery = null;
+
+            if (id.ToString() == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var deleteResult = _client.DeleteAsync("api/gallery/delete/" + id).Result;
+            if (deleteResult.IsSuccessStatusCode)
+            {
+                gallery = deleteResult.Content.ReadAsAsync<Gallery>().Result;
+            }
+
+            if (gallery == null)
+            {
+                return HttpNotFound();
+            }
+
+            return RedirectPermanent("/Profile/Details/" + gallery.ProfileId);
+        }
 
     }
 }

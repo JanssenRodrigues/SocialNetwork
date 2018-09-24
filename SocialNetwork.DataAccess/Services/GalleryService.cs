@@ -31,5 +31,10 @@ namespace SocialNetwork.DataAccess.Services
         {
             return _galleryRepository.AddPhoto(photo);
         }
+
+        public Gallery Delete(Gallery gallery)
+        {
+            return _galleryRepository.Delete(gallery);
+        }
     }
 }

@@ -302,6 +302,7 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Gallery\CreateGallery.cshtml" />
     <Content Include="Views\Gallery\Details.cshtml" />
+    <Content Include="Views\Gallery\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -21,12 +21,12 @@ namespace SocialNetwork.DataAccess.Repositories
             sqlConnection.Open();
 
             //######### INSERE NOVO PROFILE ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("CreateGallery", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("Name", gallery.Name);
-            sqlCommandAddProfile.Parameters.AddWithValue("ProfileId", gallery.ProfileId);
-            sqlCommandAddProfile.ExecuteNonQuery();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("CreateGallery", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Name", gallery.Name);
+            sqlCommand.Parameters.AddWithValue("ProfileId", gallery.ProfileId);
+            sqlCommand.ExecuteNonQuery();
             //########################################
 
             sqlConnection.Close();
@@ -40,11 +40,11 @@ namespace SocialNetwork.DataAccess.Repositories
             //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             sqlConnection.Open();
             //######### INSERE NOVO PROFILE ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("GetGallery", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("Id", id);
-            var reader = sqlCommandAddProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("GetGallery", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", id);
+            var reader = sqlCommand.ExecuteReader();
             //########################################
 
             Gallery gallery = new Gallery();
@@ -66,11 +66,11 @@ namespace SocialNetwork.DataAccess.Repositories
             //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             sqlConnection.Open();
             //######### INSERE NOVO PROFILE ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("GetGalleriesByProfileId", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("ProfileId", profile.Id);
-            var reader = sqlCommandAddProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("GetGalleriesByProfileId", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("ProfileId", profile.Id);
+            var reader = sqlCommand.ExecuteReader();
             //########################################
 
 
@@ -94,12 +94,12 @@ namespace SocialNetwork.DataAccess.Repositories
             //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             sqlConnection.Open();
             //######### INSERE NOVO PROFILE ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("CreatePhoto", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("Url", photo.Url);
-            sqlCommandAddProfile.Parameters.AddWithValue("GalleryId", photo.GalleryId);
-            sqlCommandAddProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("CreatePhoto", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Url", photo.Url);
+            sqlCommand.Parameters.AddWithValue("GalleryId", photo.GalleryId);
+            sqlCommand.ExecuteReader();
             //########################################
 
             sqlConnection.Close();
@@ -114,11 +114,11 @@ namespace SocialNetwork.DataAccess.Repositories
             sqlConnection.Open();
 
             //######### INSERE NOVO PROFILE ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("GetPhotosByGalleryId", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("GalleryId", gallery.Id);
-            var reader = sqlCommandAddProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("GetPhotosByGalleryId", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("GalleryId", gallery.Id);
+            var reader = sqlCommand.ExecuteReader();
             //########################################
 
             while (reader.Read())
@@ -128,6 +128,31 @@ namespace SocialNetwork.DataAccess.Repositories
                 photo.Url = reader["Url"].ToString();
                 photo.GalleryId = int.Parse(reader["GalleryId"].ToString());
                 gallery.Photos.Add(photo);
+            }
+
+            sqlConnection.Close();
+            return gallery;
+        }
+
+
+        public Gallery Delete(Gallery gallery)
+        {
+            SqlConnection sqlConnection;
+            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
+            //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            sqlConnection.Open();
+
+            //######### INSERE NOVO PROFILE ##########
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("DeleteGallery", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", gallery.Id);
+            var reader = sqlCommand.ExecuteReader();
+            //########################################
+
+            while (reader.Read())
+            {
+                gallery.Id = int.Parse(reader["Id"].ToString());
             }
 
             sqlConnection.Close();

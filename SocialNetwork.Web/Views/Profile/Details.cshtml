@@ -3,6 +3,31 @@
 @{
     ViewBag.Title = "Details";
 }
+<style>
+    .profile-image {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+    }
+
+    .gallery-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .gallery-box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid black;
+        width: 200px;
+        height: 100px;
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+</style>
 <div>
     @if (ViewBag.ProfileEmail == Model.Email)
     {
@@ -29,32 +54,7 @@
             @Html.ActionLink("Editar perfil", "Edit", new { id = Model.Id }) |
 
             @Html.ActionLink("Deletar", "Delete", new { id = Model.Id })
-        </p>
-        <style>
-            .profile-image {
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-            }
-
-            .gallery-container {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-
-            .gallery-box {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid black;
-                width: 200px;
-                height: 100px;
-                margin-right: 15px;
-                margin-bottom: 15px;
-            }
-        </style>
+        </p>        
         <h2>Minhas Galerias</h2>
         <div class="gallery-container">
             @foreach (var gallery in Model.Galleries)
@@ -63,10 +63,10 @@
             }
         </div>
         @Html.ActionLink("Criar nova Galeria de fotos", "CreateGallery", "Gallery")
-}
-else
-{
-<script>
+    }
+    else
+    {
+    <script>
             $(document).ready(function () {
                 $('#followButton').click(function () {
                     $.ajax({
@@ -94,52 +94,42 @@ else
                     });
                 });
             });
-</script>
-<h2>@Model.FirstName @Model.LastName</h2>
-if (ViewBag.Follow == true)
-{
-    <a href="" id="unfollowButton" class="btn btn-danger btn-lg">Deixar de seguir</a>
-}
-else
-{
-    <a href="" id="followButton" class="btn btn-primary btn-lg">Seguir</a>
-}
-<dl class="dl-horizontal">
-    <dt>
-        @Html.DisplayNameFor(model => model.FirstName)
-    </dt>
+        </script>
+    <h2>@Model.FirstName @Model.LastName</h2>
+    <div class="dl-horizontal">
+        <img src="@Html.DisplayFor(model => model.PhotoUrl)" class="profile-image" />
 
-    <dd>
-        @Html.DisplayFor(model => model.FirstName)
-    </dd>
+        <h3>
+            @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+        </h3>
+        @if (ViewBag.Follow == true)
+        {
+            <a href="" id="unfollowButton" class="btn btn-danger btn-lg">Deixar de seguir</a>
+        }
+        else
+        {
+            <a href="" id="followButton" class="btn btn-primary btn-lg">Seguir</a>
+        }
+        <h3>
+            @Html.DisplayFor(model => model.Email)
+        </h3>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.LastName)
-    </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.LastName)
-    </dd>
+        <h2>
+            @Html.DisplayFor(model => model.BirthDay)
+        </h2>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.BirthDay)
-    </dt>
+        <h2>Minhas Galerias</h2>
+        <div class="gallery-container">
+            @foreach (var gallery in Model.Galleries)
+            {
+                <a class="gallery-box" href="/Gallery/Details/@gallery.Id">@gallery.Name</a>
+            }
+        </div>
 
-    <dd>
-        @Html.DisplayFor(model => model.BirthDay)
-    </dd>
-
-    <dt>
-        @Html.DisplayNameFor(model => model.PhotoUrl)
-    </dt>
-
-    <dd>
-        <img src="@Html.DisplayFor(model => model.PhotoUrl)" alt="Alternate Text" style="width: 300px;" />
-    </dd>
-
-</dl>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    </div>
+    <p>
+        @Html.ActionLink("Voltar", "Details", "Profile", new { id = ViewBag.ProfileId }, null)
+    </p>
 }
 </div>

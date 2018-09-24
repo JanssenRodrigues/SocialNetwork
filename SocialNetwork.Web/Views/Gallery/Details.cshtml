@@ -10,9 +10,11 @@
         flex-direction: row;
         margin-bottom: 20px;
     }
+
     input[type=submit] {
         margin: 0 10px;
     }
+
     .photo {
         width: 200px;
         height: 200px;
@@ -26,17 +28,19 @@
 <div>
     <h4>@Model.Name</h4>
     <hr />
-
-    @using (Html.BeginForm("AddPhoto", "Gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @if (ViewBag.LoggedUserId == Model.ProfileId)
     {
-        @Html.AntiForgeryToken()
+        using (Html.BeginForm("AddPhoto", "Gallery", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            <label class="col-md-2">Adicionar nova foto</label>
-            <input name="Photo" type="file" class="form-control" />
-            <input type="submit" value="Enviar" class="btn btn-default" />
-        </div>
+            <div class="form-group">
+                <label class="col-md-2">Adicionar nova foto</label>
+                <input name="Photo" type="file" class="form-control" />
+                <input type="submit" value="Enviar" class="btn btn-default" />
+            </div>
 
+        }
     }
 
     <div class="photos-container">
@@ -46,6 +50,10 @@
         }
     </div>
 </div>
+@if (ViewBag.LoggedUserId == Model.ProfileId)
+{
+    <a href="/Gallery/Delete/@Model.Id" class="btn btn-danger btn-lg">Deletar galeria</a>
+}
 <p>
     @Html.ActionLink("Voltar", "Details", "Profile", new { id = Model.ProfileId }, null)
 </p>

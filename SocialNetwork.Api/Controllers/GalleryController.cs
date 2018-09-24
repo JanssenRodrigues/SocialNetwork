@@ -87,14 +87,25 @@ namespace SocialNetwork.Api.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = photo.GalleryId}, photo);
         }
-            // PUT: api/Gallery/5
-            public void Put(int id, [FromBody]string value)
+        // PUT: api/Gallery/5
+        public void Put(int id, [FromBody]string value)
         {
         }
 
         // DELETE: api/Gallery/5
-        public void Delete(int id)
+        [Route("api/Gallery/Delete/{id:int}")]
+        public IHttpActionResult Delete(int id)
         {
+            Gallery gallery = db.Galleries.Find(id);
+            if (gallery == null)
+            {
+                return NotFound();
+            }
+
+            GalleryStoredProcedureRepository galleryStored = new GalleryStoredProcedureRepository();
+            Gallery createdGallery = galleryStored.Delete(gallery);
+
+            return Ok(createdGallery);
         }
     }
 }

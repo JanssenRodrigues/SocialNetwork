@@ -14,23 +14,19 @@ namespace SocialNetwork.DataAccess.Repositories
         public Profile Create(Profile profile)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
-            //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
-            //######### INSERE NOVO PROFILE ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("CreateProfile", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            //sqlCommandAddProfile.Parameters.AddWithValue("Id", profile.Id);
-            sqlCommandAddProfile.Parameters.AddWithValue("Email", profile.Email);
-            sqlCommandAddProfile.Parameters.AddWithValue("FirstName", profile.FirstName);
-            sqlCommandAddProfile.Parameters.AddWithValue("LastName", profile.LastName);
-            sqlCommandAddProfile.Parameters.AddWithValue("BirthDay", profile.BirthDay);
-            sqlCommandAddProfile.Parameters.AddWithValue("AccountId", profile.Email);
-            sqlCommandAddProfile.Parameters.AddWithValue("PhotoUrl", profile.PhotoUrl);
-            sqlCommandAddProfile.ExecuteNonQuery();
-            //########################################
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("CreateProfile", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Email", profile.Email);
+            sqlCommand.Parameters.AddWithValue("FirstName", profile.FirstName);
+            sqlCommand.Parameters.AddWithValue("LastName", profile.LastName);
+            sqlCommand.Parameters.AddWithValue("BirthDay", profile.BirthDay);
+            sqlCommand.Parameters.AddWithValue("AccountId", profile.Email);
+            sqlCommand.Parameters.AddWithValue("PhotoUrl", profile.PhotoUrl);
+            sqlCommand.ExecuteNonQuery();
 
             sqlConnection.Close();
             return profile;
@@ -39,16 +35,15 @@ namespace SocialNetwork.DataAccess.Repositories
         public Profile Get(int? id)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
             Profile profile = new Profile();
-            //######### OBTEM TODOS OS PROFILES ##########
-            SqlCommand sqlCommandGetProfile;
-            sqlCommandGetProfile = new SqlCommand("GetProfileById", sqlConnection);
-            sqlCommandGetProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandGetProfile.Parameters.AddWithValue("Id", id.ToString());
-            var reader = sqlCommandGetProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("GetProfileById", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", id.ToString());
+            var reader = sqlCommand.ExecuteReader();
 
             while (reader.Read())
             {
@@ -59,7 +54,6 @@ namespace SocialNetwork.DataAccess.Repositories
                 profile.PhotoUrl = reader["PhotoUrl"].ToString();
                 profile.Email = reader["Email"].ToString();
             }
-            //############################################
 
             sqlConnection.Close();
             return profile;
@@ -68,16 +62,15 @@ namespace SocialNetwork.DataAccess.Repositories
         public Profile GetByEmail(string email)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
             Profile profile = new Profile();
-            //######### OBTEM TODOS OS PROFILES ##########
-            SqlCommand sqlCommandGetProfile;
-            sqlCommandGetProfile = new SqlCommand("GetProfileByEmail", sqlConnection);
-            sqlCommandGetProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandGetProfile.Parameters.AddWithValue("Email", email);
-            var reader = sqlCommandGetProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("GetProfileByEmail", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Email", email);
+            var reader = sqlCommand.ExecuteReader();
 
             while (reader.Read())
             {
@@ -88,7 +81,6 @@ namespace SocialNetwork.DataAccess.Repositories
                 profile.PhotoUrl = reader["PhotoUrl"].ToString();
                 profile.Email = reader["Email"].ToString();
             }
-            //############################################
 
             sqlConnection.Close();
             return profile;
@@ -98,19 +90,19 @@ namespace SocialNetwork.DataAccess.Repositories
         public Profile EditProfile(Profile profile)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
             //######### OBTEM TODOS OS PROFILES ##########
-            SqlCommand sqlCommandGetProfile;
-            sqlCommandGetProfile = new SqlCommand("EditProfile", sqlConnection);
-            sqlCommandGetProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandGetProfile.Parameters.AddWithValue("Email", profile.Email);
-            sqlCommandGetProfile.Parameters.AddWithValue("FirstName", profile.FirstName);
-            sqlCommandGetProfile.Parameters.AddWithValue("LastName", profile.LastName);
-            sqlCommandGetProfile.Parameters.AddWithValue("BirthDay", profile.BirthDay);
-            sqlCommandGetProfile.Parameters.AddWithValue("PhotoUrl", profile.PhotoUrl);
-            sqlCommandGetProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("EditProfile", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Email", profile.Email);
+            sqlCommand.Parameters.AddWithValue("FirstName", profile.FirstName);
+            sqlCommand.Parameters.AddWithValue("LastName", profile.LastName);
+            sqlCommand.Parameters.AddWithValue("BirthDay", profile.BirthDay);
+            sqlCommand.Parameters.AddWithValue("PhotoUrl", profile.PhotoUrl);
+            sqlCommand.ExecuteReader();
 
             //############################################
 
@@ -121,22 +113,20 @@ namespace SocialNetwork.DataAccess.Repositories
         public Profile DeleteProfile(Profile profile)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
-            //######### OBTEM TODOS OS PROFILES ##########
-            SqlCommand sqlCommandGetProfile;
-            sqlCommandGetProfile = new SqlCommand("DeleteProfile", sqlConnection);
-            sqlCommandGetProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandGetProfile.Parameters.AddWithValue("Email", profile.Email);
-            var reader = sqlCommandGetProfile.ExecuteReader();
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("DeleteProfile", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Email", profile.Email);
+            var reader = sqlCommand.ExecuteReader();
 
             while (reader.Read())
             {
                 profile.Id = int.Parse(reader["Id"].ToString());
                 profile.Email = reader["Email"].ToString();
             }
-            //############################################
 
             sqlConnection.Close();
             return profile;

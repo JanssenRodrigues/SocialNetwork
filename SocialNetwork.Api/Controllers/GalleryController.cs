@@ -94,6 +94,7 @@ namespace SocialNetwork.Api.Controllers
 
         // DELETE: api/Gallery/5
         [Route("api/Gallery/Delete/{id:int}")]
+        [ResponseType(typeof(Gallery))]
         public IHttpActionResult Delete(int id)
         {
             Gallery gallery = db.Galleries.Find(id);

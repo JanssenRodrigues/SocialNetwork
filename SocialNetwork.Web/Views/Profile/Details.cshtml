@@ -3,36 +3,11 @@
 @{
     ViewBag.Title = "Details";
 }
-<style>
-    .profile-image {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-    }
-
-    .gallery-container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .gallery-box {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid black;
-        width: 200px;
-        height: 100px;
-        margin-right: 15px;
-        margin-bottom: 15px;
-    }
-</style>
 <div>
     @if (ViewBag.ProfileEmail == Model.Email)
     {
         <h1>Meu Perfil</h1>
-        <div class="dl-horizontal">
+        <div class="profile-container">
 
             <img src="@Html.DisplayFor(model => model.PhotoUrl)" class="profile-image" />
 
@@ -44,9 +19,9 @@
             </h3>
 
 
-            <h2>
+            <h3>
                 @Html.DisplayFor(model => model.BirthDay)
-            </h2>
+            </h3>
 
         </div>
 
@@ -62,7 +37,7 @@
                 <a class="gallery-box" href="/Gallery/Details/@gallery.Id">@gallery.Name</a>
             }
         </div>
-        @Html.ActionLink("Criar nova Galeria de fotos", "CreateGallery", "Gallery")
+        @Html.ActionLink(" + Criar nova Galeria de fotos", "CreateGallery", "Gallery")
     }
     else
     {

@@ -23,7 +23,7 @@ namespace SocialNetwork.DataAccess.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Janssen\\source\\repos" +
             "\\SocialNetwork\\SocialNetwork.Api\\App_Data\\aspnet-SocialNetwork.Api-2018081211405" +
@@ -32,9 +32,6 @@ namespace SocialNetwork.DataAccess.Properties {
         public string DbConnectionString {
             get {
                 return ((string)(this["DbConnectionString"]));
-            }
-            set {
-                this["DbConnectionString"] = value;
             }
         }
     }

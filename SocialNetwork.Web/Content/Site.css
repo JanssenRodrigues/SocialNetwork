@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background: aliceblue;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +22,54 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+#loginForm {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-top: 50px;
+}
+.login-form {
+    border: 1px solid black;
+    padding: 30px;
+}
+
+.profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-height: 200px;
+}
+
+.profile-container h3 {
+    font-size: 20px;
+    width: 100%;
+    margin-left: 20px;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    background: white;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.gallery-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.gallery-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    width: 200px;
+    height: 150px;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }

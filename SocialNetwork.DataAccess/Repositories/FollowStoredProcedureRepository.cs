@@ -14,18 +14,15 @@ namespace SocialNetwork.DataAccess.Repositories
         public Follow FollowProfile(Follow follow)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
-            //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
-            //######### INSERE NOVO SEGUIDOR ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("FollowProfile", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("UserId", follow.UserId);
-            sqlCommandAddProfile.Parameters.AddWithValue("FollowingId", follow.FollowingId);
-            sqlCommandAddProfile.ExecuteNonQuery();
-            //########################################
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("FollowProfile", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("UserId", follow.UserId);
+            sqlCommand.Parameters.AddWithValue("FollowingId", follow.FollowingId);
+            sqlCommand.ExecuteNonQuery();
 
             sqlConnection.Close();
             return follow;
@@ -34,18 +31,17 @@ namespace SocialNetwork.DataAccess.Repositories
         public Follow CheckFollow(int UserId, int FollowingId)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
-            //sqlConnection = new SqlConnection("Server=tcp:myinfnetsocialnetwork.database.windows.net,1433;Initial Catalog=MySocialNetwork;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
             Follow follow = new Follow();
-            //######### VERIFICA SE UM PERFIL JA SEGUE OUTRO PERFIL ##########
-            SqlCommand sqlCommandAddProfile;
-            sqlCommandAddProfile = new SqlCommand("CheckFollow", sqlConnection);
-            sqlCommandAddProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandAddProfile.Parameters.AddWithValue("UserId", UserId);
-            sqlCommandAddProfile.Parameters.AddWithValue("FollowingId", FollowingId);
-            var reader = sqlCommandAddProfile.ExecuteReader();
+
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("CheckFollow", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("UserId", UserId);
+            sqlCommand.Parameters.AddWithValue("FollowingId", FollowingId);
+            var reader = sqlCommand.ExecuteReader();
 
             while (reader.Read())
             {
@@ -53,7 +49,6 @@ namespace SocialNetwork.DataAccess.Repositories
                 follow.UserId = int.Parse(reader["UserId"].ToString());
                 follow.FollowingId = int.Parse(reader["FollowingId"].ToString());
             }
-            //########################################
 
             sqlConnection.Close();
             return follow;
@@ -62,24 +57,23 @@ namespace SocialNetwork.DataAccess.Repositories
         public Follow DeleteFollow(int UserId, int FollowingId)
         {
             SqlConnection sqlConnection;
-            sqlConnection = new SqlConnection(@"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True");
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
             sqlConnection.Open();
 
             Follow follow = new Follow();
-            //######### OBTEM TODOS OS PROFILES ##########
-            SqlCommand sqlCommandGetProfile;
-            sqlCommandGetProfile = new SqlCommand("DeleteFollow", sqlConnection);
-            sqlCommandGetProfile.CommandType = System.Data.CommandType.StoredProcedure;
-            sqlCommandGetProfile.Parameters.AddWithValue("UserId", UserId);
-            sqlCommandGetProfile.Parameters.AddWithValue("FollowingId", FollowingId);
-            var reader = sqlCommandGetProfile.ExecuteReader();
+
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("DeleteFollow", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("UserId", UserId);
+            sqlCommand.Parameters.AddWithValue("FollowingId", FollowingId);
+            var reader = sqlCommand.ExecuteReader();
 
             while (reader.Read())
             {
                 follow.UserId = int.Parse(reader["UserId"].ToString());
                 follow.FollowingId = int.Parse(reader["FollowingId"].ToString());
             }
-            //############################################
 
             sqlConnection.Close();
             return follow;

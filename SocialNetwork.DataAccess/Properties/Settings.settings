@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="DbConnectionString" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=C:\Users\Janssen\source\repos\SocialNetwork\SocialNetwork.Api\App_Data\aspnet-SocialNetwork.Api-20180812114050.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Security=True</Value>
+      <Value Profile="(Default)">Server=tcp:adsedsdatabaseserver.database.windows.net,1433;Initial Catalog=AdsEdsDatabase;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

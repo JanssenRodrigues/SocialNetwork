@@ -30,7 +30,6 @@ namespace SocialNetwork.Web.Controllers
         }
 
         // GET: Profile
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             RegisterClientToken();

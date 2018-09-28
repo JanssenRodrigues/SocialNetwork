@@ -14,5 +14,6 @@ namespace SocialNetwork.Core.Interfaces.Repositories
          Photo AddPhoto(Photo photo);
          Gallery GetPhotos(Gallery gallery);
          Gallery Delete(Gallery gallery);
+         Gallery Edit(Gallery gallery);
     }
 }

@@ -72,6 +72,23 @@ namespace SocialNetwork.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = gallery.Id }, gallery);
         }
 
+        // POST: api/Gallery/Edit/:id
+        [HttpPost]
+        [Route("api/gallery/edit/{id:int}")]
+        [ResponseType(typeof(Gallery))]
+        public IHttpActionResult Edit(Gallery gallery)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            GalleryStoredProcedureRepository storedGallery = new GalleryStoredProcedureRepository();
+            storedGallery.Edit(gallery);
+
+            return Ok(gallery);
+        }
+
         // POST: api/Gallery/AddPhoto
         [HttpPost]
         [Route("api/Gallery/AddPhoto")]

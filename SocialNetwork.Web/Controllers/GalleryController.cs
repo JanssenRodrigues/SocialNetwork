@@ -65,7 +65,7 @@ namespace SocialNetwork.Web.Controllers
             Gallery gallery = new Gallery();
 
             gallery = _client.GetAsync("api/Gallery/" + id).Result.Content.ReadAsAsync<Gallery>().Result;
-            
+
             ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
             Profile createdProfile = profileStored.GetByEmail(Session["userEmail"].ToString());
             ViewBag.LoggedUserId = createdProfile.Id;
@@ -73,7 +73,34 @@ namespace SocialNetwork.Web.Controllers
             return View(gallery);
         }
 
+        // GET: Gallery/Edit/:id
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            RegisterClientToken();
+            Gallery gallery = new Gallery();
 
+            gallery = _client.GetAsync("api/Gallery/" + id).Result.Content.ReadAsAsync<Gallery>().Result;
+
+            ProfileStoredProcedureRepository profileStored = new ProfileStoredProcedureRepository();
+            Profile createdProfile = profileStored.GetByEmail(Session["userEmail"].ToString());
+            ViewBag.LoggedUserId = createdProfile.Id;
+
+            return View(gallery);
+        }
+
+        // POST: Gallery/Edit/:id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] Gallery gallery)
+        {
+            RegisterClientToken();
+            if (ModelState.IsValid)
+            {
+                await _client.PostAsJsonAsync<Gallery>("api/Gallery/Edit/" + gallery.Id, gallery);
+            }
+            return RedirectPermanent("/Gallery/Details/" + gallery.Id);
+        }
 
         //POST: Gallery/AddPhoto
         [HttpPost]

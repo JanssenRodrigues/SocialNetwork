@@ -55,5 +55,6 @@
     <a href="/Gallery/Delete/@Model.Id" class="btn btn-danger btn-lg">Deletar galeria</a>
 }
 <p>
-    @Html.ActionLink("Voltar", "Details", "Profile", new { id = Model.ProfileId }, null)
+    @Html.ActionLink("Voltar", "Details", "Profile", new { id = Model.ProfileId }, null) |
+    @Html.ActionLink("Editar", "Edit", "Gallery", new { id = Model.Id }, null)
 </p>

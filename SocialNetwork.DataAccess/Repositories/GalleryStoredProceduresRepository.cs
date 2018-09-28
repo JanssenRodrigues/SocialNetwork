@@ -142,5 +142,22 @@ namespace SocialNetwork.DataAccess.Repositories
             sqlConnection.Close();
             return gallery;
         }
+
+        public Gallery Edit(Gallery gallery)
+        {
+            SqlConnection sqlConnection;
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("EditGallery", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", gallery.Id);
+            sqlCommand.Parameters.AddWithValue("Name", gallery.Name);
+            sqlCommand.ExecuteNonQuery();
+
+            sqlConnection.Close();
+            return gallery;
+        }
     }
 }

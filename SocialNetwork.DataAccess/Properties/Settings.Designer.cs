@@ -25,10 +25,10 @@ namespace SocialNetwork.DataAccess.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDb)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Janssen\\source\\repos" +
-            "\\SocialNetwork\\SocialNetwork.Api\\App_Data\\aspnet-SocialNetwork.Api-2018081211405" +
-            "0.mdf;Initial Catalog=aspnet-SocialNetwork.Api-20180812114050;Integrated Securit" +
-            "y=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=tcp:adsedsdatabaseserver.database.windows.net,1433;Initial Catalog=AdsEdsD" +
+            "atabase;Persist Security Info=False;User ID=olivato;Password=EDSInf123;MultipleA" +
+            "ctiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeo" +
+            "ut=30;")]
         public string DbConnectionString {
             get {
                 return ((string)(this["DbConnectionString"]));

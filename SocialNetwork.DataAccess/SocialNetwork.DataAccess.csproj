@@ -88,13 +88,17 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\CountryStoredProcedureRepository.cs" />
     <Compile Include="Repositories\FollowStoredProcedureRepository.cs" />
     <Compile Include="Repositories\GalleryStoredProceduresRepository.cs" />
     <Compile Include="Repositories\ProfileStoredProcedureRepository.cs" />
+    <Compile Include="Repositories\StateStoredProcedureRepository.cs" />
+    <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\EncodingService.cs" />
     <Compile Include="Services\FollowService.cs" />
     <Compile Include="Services\GalleryService.cs" />
     <Compile Include="Services\ProfileService.cs" />
+    <Compile Include="Services\StateService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

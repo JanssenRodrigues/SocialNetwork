@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Web", "Social
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureStorageService", "AzureStorageService\AzureStorageService.csproj", "{3658F984-6D7C-4CB0-BCF4-5DB2D468E2B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.ApiCountries", "SocialNetwork.ApiCountries\SocialNetwork.ApiCountries.csproj", "{AD7F19FB-49FD-4F56-92CD-3160E1432B64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{3658F984-6D7C-4CB0-BCF4-5DB2D468E2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3658F984-6D7C-4CB0-BCF4-5DB2D468E2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3658F984-6D7C-4CB0-BCF4-5DB2D468E2B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7F19FB-49FD-4F56-92CD-3160E1432B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD7F19FB-49FD-4F56-92CD-3160E1432B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD7F19FB-49FD-4F56-92CD-3160E1432B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD7F19FB-49FD-4F56-92CD-3160E1432B64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

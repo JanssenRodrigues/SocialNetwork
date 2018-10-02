@@ -52,14 +52,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\Repositories\ICountryRepository.cs" />
     <Compile Include="Interfaces\Repositories\IFollowRepository.cs" />
     <Compile Include="Interfaces\Repositories\IGalleryRepository.cs" />
     <Compile Include="Interfaces\Repositories\IProfileRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IStateRepository.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Follow.cs" />
     <Compile Include="Models\Gallery.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\RecoveryPass.cs" />
+    <Compile Include="Models\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

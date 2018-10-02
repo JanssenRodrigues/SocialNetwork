@@ -20,5 +20,7 @@ namespace SocialNetwork.Core.Models
         public string AccountId { get; set; }
         public string PhotoUrl { get; set; }
         public virtual ICollection<Gallery> Galleries { get; set; }
+        public int Country { get; set; }
+        public int State { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AzureStorageService;
 using SocialNetwork.Core.Models;
+using SocialNetwork.DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,11 @@ namespace SocialNetwork.Web.Controllers
             }
 
             State state = _client.GetAsync("api/State/" + id).Result.Content.ReadAsAsync<State>().Result;
+            CountryStoredProcedureRepository countryStored = new CountryStoredProcedureRepository();
+
+            var country = countryStored.Get(id);
+
+            state.CountryName = country.Name;
 
             return View(state);
         }
@@ -82,45 +88,55 @@ namespace SocialNetwork.Web.Controllers
         // GET: State/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            State state = _client.GetAsync("api/State/" + id).Result.Content.ReadAsAsync<State>().Result;
+            List<Country> countries = (List<Country>)_client.GetAsync("api/country/all").Result.Content.ReadAsAsync<IEnumerable<Country>>().Result;
+            ViewBag.CountryList = countries;
+
+            return View(state);
         }
 
         // POST: State/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,PhotoUrl,CountryId")] State state, HttpPostedFileBase PhotoUrl)
         {
-            try
+            RegisterClientToken();
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                //##### Upload da Foto para o Blob #####
+                HttpPostedFileBase file = PhotoUrl;
+                var blobService = new BlobService();
+                string fileUrl = await blobService.UploadImage("socialnetwork", Guid.NewGuid().ToString() + file.FileName, file.InputStream, file.ContentType);
+                state.PhotoUrl = fileUrl;
+                //#######################################
+                await _client.PostAsJsonAsync<State>("api/state/edit", state);
 
-                return RedirectToAction("Index");
+
+                return RedirectPermanent("/State/Index/");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(state);
         }
 
         // GET: State/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            State state = _client.GetAsync("api/State/" + id).Result.Content.ReadAsAsync<State>().Result;
+
+            CountryStoredProcedureRepository countryStored = new CountryStoredProcedureRepository();
+            var country = countryStored.Get(id);
+
+            state.CountryName = country.Name;
+
+            return View(state);
         }
 
         // POST: State/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete([Bind(Include = "Id,Name,PhotoUrl,CountryId")] State state)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            _client.DeleteAsync("api/state/delete/" + state.Id);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectPermanent("/State/Index/");
         }
     }
 }

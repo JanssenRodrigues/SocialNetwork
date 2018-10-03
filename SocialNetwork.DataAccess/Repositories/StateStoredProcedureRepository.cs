@@ -29,6 +29,64 @@ namespace SocialNetwork.DataAccess.Repositories
             return state;
         }
 
+        public State Delete(State state)
+        {
+            SqlConnection sqlConnection;
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("DeleteState", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", state.Id);
+            sqlCommand.ExecuteNonQuery();
+
+            sqlConnection.Close();
+            return state;
+        }
+
+        public State Edit(State state)
+        {
+            SqlConnection sqlConnection;
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("EditState", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", state.Id);
+            sqlCommand.Parameters.AddWithValue("Name", state.Name);
+            sqlCommand.Parameters.AddWithValue("PhotoUrl", state.PhotoUrl);
+            sqlCommand.Parameters.AddWithValue("CountryId", state.CountryId);
+            sqlCommand.ExecuteNonQuery();
+
+            sqlConnection.Close();
+            return state;
+        }
+
+        public State Get(int? id)
+        {
+            SqlConnection sqlConnection;
+            sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
+            sqlConnection.Open();
+
+            SqlCommand sqlCommand;
+            sqlCommand = new SqlCommand("GetState", sqlConnection);
+            sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("Id", id);
+            var reader = sqlCommand.ExecuteReader();
+
+            State state = new State();
+            while (reader.Read())
+            {
+                state.Id = int.Parse(reader["Id"].ToString());
+                state.Name = reader["Name"].ToString();
+                state.PhotoUrl = reader["PhotoUrl"].ToString();
+                state.CountryId = int.Parse(reader["CountryId"].ToString());
+            }
+            sqlConnection.Close();
+            return state;
+        }
 
         public IEnumerable<State> GetAll()
         {
@@ -55,5 +113,27 @@ namespace SocialNetwork.DataAccess.Repositories
             sqlConnection.Close();
             return states;
         }
+
+        //public Country GetCountryById(int? id)
+        //{
+        //    SqlConnection sqlConnection;
+        //    sqlConnection = new SqlConnection(Properties.Settings.Default.DbConnectionString);
+        //    sqlConnection.Open();
+
+        //    SqlCommand sqlCommand;
+        //    sqlCommand = new SqlCommand("GetCountry", sqlConnection);
+        //    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+        //    sqlCommand.Parameters.AddWithValue("Id", id);
+        //    var reader = sqlCommand.ExecuteReader();
+
+        //    Country country = new Country();
+        //    while (reader.Read())
+        //    {
+        //        country.Name = reader["Name"].ToString();
+        //    }
+
+        //    sqlConnection.Close();
+        //    return country;
+        //}
     }
 }

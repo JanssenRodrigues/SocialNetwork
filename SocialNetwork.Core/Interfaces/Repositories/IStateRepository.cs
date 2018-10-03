@@ -10,6 +10,7 @@ namespace SocialNetwork.Core.Interfaces.Repositories
     public interface IStateRepository
     {
         State Get(int? id);
+        //State GetCountryNameById(int? id);
         IEnumerable<State> GetAll();
         State Create(State state);
         State Edit(State state);

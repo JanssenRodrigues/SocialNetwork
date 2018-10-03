@@ -18,7 +18,14 @@ namespace SocialNetwork.ApiCountries.Controllers
         public IHttpActionResult GetAll()
         {
             StateStoredProcedureRepository storedState = new StateStoredProcedureRepository();
+            CountryStoredProcedureRepository countryState = new CountryStoredProcedureRepository();
             var states = storedState.GetAll();
+
+            foreach (var state in states)
+            {
+                var country = countryState.Get(state.CountryId);
+                state.CountryName = country.Name;
+            }
 
             return Ok(states);
         }
@@ -34,5 +41,41 @@ namespace SocialNetwork.ApiCountries.Controllers
 
             return Ok(state);
         }
+
+        // GET: api/state/:id
+        [HttpGet]
+        public IHttpActionResult GetState(int id)
+        {
+            StateStoredProcedureRepository storedState = new StateStoredProcedureRepository();
+            State state = storedState.Get(id);
+
+            return Ok(state);
+        }
+
+        //POST: api/State/edit
+        [HttpPost]
+        [Route("api/state/edit")]
+        [ResponseType(typeof(State))]
+        public IHttpActionResult EditState(State state)
+        {
+            StateStoredProcedureRepository storedState = new StateStoredProcedureRepository();
+            storedState.Edit(state);
+
+            return Ok(state);
+        }
+
+        //POST: api/State/delete/:id
+        [HttpDelete]
+        [Route("api/state/delete/{id}")]
+        [ResponseType(typeof(State))]
+        public IHttpActionResult DeleteState(int id)
+        {
+            StateStoredProcedureRepository storedState = new StateStoredProcedureRepository();
+            State state = storedState.Get(id);
+            storedState.Delete(state);
+
+            return Ok(state);
+        }
+
     }
 }

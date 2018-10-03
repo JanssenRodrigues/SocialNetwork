@@ -48,7 +48,7 @@ namespace SocialNetwork.Web.Controllers
             State state = _client.GetAsync("api/State/" + id).Result.Content.ReadAsAsync<State>().Result;
             CountryStoredProcedureRepository countryStored = new CountryStoredProcedureRepository();
 
-            var country = countryStored.Get(id);
+            var country = countryStored.Get(state.CountryId);
 
             state.CountryName = country.Name;
 
